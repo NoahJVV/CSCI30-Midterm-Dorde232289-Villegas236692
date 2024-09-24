@@ -7,20 +7,22 @@ class RingBuffer:
         '''
         # TO-DO: implement this
         self.MAX_CAP = capacity
-        self._front = # to-do
-        self._rear =  # to-do
-        self.buffer = # to-do
+        self._front = ''
+        self._rear = ''
+        self.buffer = []
 
     def size(self) -> int:
         '''
         Return number of items currently in the buffer
         '''
+
         # TO-DO: implement this
 
     def is_empty(self) -> bool:
         '''
         Is the buffer empty (size equals zero)?
         '''
+        return len(self.buffer).
         # TO-DO: implement this
         
     def is_full(self) -> bool:
@@ -33,13 +35,17 @@ class RingBuffer:
         '''
         Add item `x` to the end
         '''
-        # TO-DO: implement this
+        self.buffer.insert(0, x)        # Insert the value at the start of self.buffer
+
+        # AUTO DEQUEUE
+        if len(self.buffer) > capacity:     # Check if self.buffer is at max capacity
+            self.buffer.pop(capacity)       # If so, pop the end to maintain the capacity
 
     def dequeue(self) -> float:
         '''
         Return and remove item from the front
         '''
-        # TO-DO: implement this
+        self.buffer.pop(len(self.buffer))   # Remove the last (oldest) value in self.buffer
 
     def peek(self) -> float:
         '''
