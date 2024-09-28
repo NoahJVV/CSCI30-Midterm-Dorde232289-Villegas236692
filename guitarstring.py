@@ -1,6 +1,25 @@
 #!/usr/bin/env python3
+'''
+	This is a class that defines the ring buffer.
+	
+	@author Andre Benedict A. Dorde (232289)
+	@author Noah Jacob V. Villegas(236692)
+	@version 30 September 2024
+	
+	I have not discussed the Python language code in my program 
+	with anyone other than my instructor or the teaching assistants 
+	assigned to this course.
+
+	I have not used Python language code obtained from another student, 
+	or any other unauthorized source, either modified or unmodified.
+
+	If any Python language code or documentation used in my program 
+	was obtained from another source, such as a textbook or website, 
+	that has been clearly noted with a proper citation in the comments 
+	of my program.
+'''
+
 from ringbuffer import *
-import math
 
 class GuitarString:
     def __init__(self, frequency: float):
@@ -29,6 +48,7 @@ class GuitarString:
         '''
         Set the buffer to white noise
         '''
+        # Fill buffer with white noise
         for i in range(self.capacity):
             self.buffer.enqueue(random.uniform(-0.5, 0.5))
 
@@ -36,7 +56,9 @@ class GuitarString:
         '''
         Advance the simulation one time step by applying the Karplus--Strong update
         '''
+        # Apply Karplus--Strong
         self.buffer.enqueue(0.996 * (0.5 * (self.buffer.dequeue() + self.buffer.peek())))
+        # Add a tick count
         self.ticks += 1
 
 
