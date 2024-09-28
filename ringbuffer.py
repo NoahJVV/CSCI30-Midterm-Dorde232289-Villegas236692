@@ -57,60 +57,44 @@ class RingBuffer:
         '''
             Add item `x` to the end
         '''
-        try:
-            if self.is_full(): 
-                raise RingBufferFull
-            
-            self.buffer[self._rear] = x                       
-            self._rear += 1                                         
+        if self.is_full(): 
+            raise RingBufferFull
+        
+        self.buffer[self._rear] = x                       
+        self._rear += 1                                         
 
-            if self._rear == self.MAX_CAP: self._rear = 0           
-
-            # print(f"{self.buffer} LOOK AT ME!!!!!! I AM ADDING!!!!!!!!!!!!!!!!")
-
-        except:
-            print("RING BUFF FULL!")
+        if self._rear == self.MAX_CAP: self._rear = 0
 
     def dequeue(self) -> float:
         '''
             Return and remove item from the front
         '''
-        try:
-            if self.is_empty():
-                raise RingBufferEmpty                              
-            
-            # print(f"{self.buffer} LOOK AT ME!!!!!! I AM GAMER!!!!!")
-
-            # Save the value of the item at the front of the buffer to return later
-            old_front = self.buffer[self._front]                    
-
-            # Remove the value that is being dequeued and
-            # update the value for the front of the buffer
-            self.buffer[self._front] = None                         
-            self._front += 1                                       
-
-            # Wrap around
-            if self._front == self.MAX_CAP: self._rear = 0
-
-            # Return the value of the item removed
-            return old_front
+        if self.is_empty():
+            raise RingBufferEmpty                              
         
-        except:
-            print(f"{self.buffer} RING BUFF EMPTY 1")
+        # Save the value of the item at the front of the buffer to return later
+        old_front = self.buffer[self._front]                    
+
+        # Remove the value that is being dequeued and
+        # update the value for the front of the buffer
+        self.buffer[self._front] = None                         
+        self._front += 1                                       
+
+        # Wrap around
+        if self._front == self.MAX_CAP: self._rear = 0
+
+        # Return the value of the item removed
+        return old_front
 
     def peek(self) -> float:
         '''
             Return (but do not delete) item from the front
         '''
-        try:
-            if self.is_empty():
-                raise RingBufferEmpty
-                
-            # Return the last (newest) value in self.buffer
-            return self._front
-
-        except:
-            print("RING BUFF EMPTY 2")
+        if self.is_empty():
+            raise RingBufferEmpty
+            
+        # Return the last (newest) value in self.buffer
+        return self.buffer[self._front]
 
 
 class RingBufferFull(Exception):
