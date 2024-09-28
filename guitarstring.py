@@ -20,6 +20,7 @@
 '''
 
 from ringbuffer import *
+import math
 
 class GuitarString:
     def __init__(self, frequency: float):
