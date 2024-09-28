@@ -81,7 +81,7 @@ class RingBuffer:
         self._front += 1                                       
 
         # Wrap around
-        if self._front == self.MAX_CAP: self._rear = 0
+        if self._front == self.MAX_CAP: self._front = 0
 
         # Return the value of the item removed
         return old_front
