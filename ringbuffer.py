@@ -44,14 +44,18 @@ class RingBuffer:
             Is the buffer empty (size equals zero)?
         '''
         # Return bool about if buffer is empty
-        return self.size() == 0
+        for element in self.buffer:
+            if element is not None: return False
+        return True
         
     def is_full(self) -> bool:
         '''
             Is the buffer full (size equals capacity)?
         '''
         # Return bool about if buffer is at full capacity
-        return self.size() >= self.MAX_CAP                     
+        for element in self.buffer:
+            if element is None: return False
+        return True                     
 
     def enqueue(self, x: float):
         '''
