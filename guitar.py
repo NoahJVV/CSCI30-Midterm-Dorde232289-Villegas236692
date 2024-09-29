@@ -1,4 +1,24 @@
 #!/usr/bin/env python3
+'''
+	This is a program that plays notes in the form of guitar strings
+  based on the user's input.
+	
+	@author Andre Benedict A. Dorde (232289)
+	@author Noah Jacob V. Villegas(236692)
+	@version 30 September 2024
+	
+	I have not discussed the Python language code in my program 
+	with anyone other than my instructor or the teaching assistants 
+	assigned to this course.
+
+	I have not used Python language code obtained from another student, 
+	or any other unauthorized source, either modified or unmodified.
+
+	If any Python language code or documentation used in my program 
+	was obtained from another source, such as a textbook or website, 
+	that has been clearly noted with a proper citation in the comments 
+	of my program.
+'''
 
 from guitarstring import GuitarString
 from stdaudio import play_sample
@@ -9,68 +29,61 @@ if __name__ == '__main__':
     # initialize window
     stdkeys.create_window()
 
-    keyboard = "q2we4r5ty7u8i9op-[=]"        # Initialize the keys of the keyboard being used
-    samples = []                                # Initialize the samples list
-
-    # for i in range(len(keyboard)):
-    #   samples.append(GuitarString(440 * 1.059463 ** (i - 12)))
-    # print(samples)
+    keyboard = "q2we4r5ty7u8i9op-[=]l;'"       # Initialize the keys of the keyboard being used
+    samples = []                            # Initialize the samples list
 
     n_iters = 0
     while True:
-      # it turns out that the bottleneck is in polling for key events
-      # for every iteration, so we'll do it less often, say every 
-      # 1000 or so iterations
-      if n_iters == 1000:
+      # Polls to wait for user input through key events
+      if n_iters == 1000: # Interval at which key events are accepted
         stdkeys.poll()
         n_iters = 0
       n_iters += 1
 
-      sample = 0
-      index = 0
-      # check if the user has typed a key; if so, process it
+      # Check if the user has typed a key. If so, process it:
       if stdkeys.has_next_key_typed():
-        key = stdkeys.next_key_typed()
-        print(key)
-#SpecAccurateNoah basis ends here
+        key = stdkeys.next_key_typed()  # Assign the key pressed to a variable
 
+        # Try-exception to avoid any sudden exceptions
         try:
-          i = keyboard.index(key)
-          new = True
-          for j in samples:
-            if j.buffer.MAX_CAP == ceil(44100 / (440 * 1.059463 ** (i-12))):
-              j.pluck()
-              j.ticks = 0
+          index = keyboard.index(key)       # Assign the index of the key within the keyboard to a var
+          new = True                        # Initialize the var that checks whether or not the sample added is new
+
+          # Run through all the samples within the list of samples
+          for elem in samples:
+            # If the sample's freq. matches the freq. of a sample in the list:
+            if elem.buffer.MAX_CAP == ceil(44100 / (440 * 1.059463 ** (index-12))):
+              # Pluck the sample
+              elem.pluck()
+
+              # Reset the tick count
+              elem.ticks = 0
+
+              # Update new to reflect that the sample already exists within the list
               new = False
-              print("Old string plucked\n\n")
               break
+
+          # If it is a new sample: 
           if new:
-            samples.append(GuitarString(440 * 1.059463 ** (i-12)))
+            # Add the sample to the list
+            samples.append(GuitarString(440 * 1.059463 ** (index-12)))
+
+            # Pluck the sample
             samples[len(samples)-1].pluck()
-            print("New string plucked\n\n")
         except:
           pass
-      
+
+      # Compute the superposition of samples
       sample = 0
       for i in samples:
         sample += i.sample()
+
+        # Advance the simulation of each guitar string
         i.tick()
+
+        # If the time that the sample has been playing for exceeds the threshold, remove it
         if i.time() > 30000:
           samples.remove(i)
       
+      # Play the sample
       play_sample(sample)
-        
-#SpecAccurateNoah basis starts here
-      #   # If the key exists in the keyboard set, process it
-      #   if keyboard.find(key) != -1:
-      #     index = keyboard.find(key)
-
-      #     samples[index].pluck()
-
-      # for i in samples:
-      #   if i.sample() != 0:
-      #     print(f"i-sample: {i.sample()}\n\n")
-      #     sample += i.sample()
-      #     i.tick()
-
-      # play_sample(sample)

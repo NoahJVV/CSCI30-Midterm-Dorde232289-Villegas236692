@@ -39,7 +39,7 @@ class RingBuffer:
 
         # Return the count
         return count                                     
-
+    
     def is_empty(self) -> bool:
         '''
             Is the buffer empty (size equals zero)?
@@ -93,7 +93,7 @@ class RingBuffer:
         # Wrap around for self._front
         if self._front == self.MAX_CAP: self._front = 0
 
-        # Return the value of the item removed
+        # Return the value of the item dequeued
         return old_front
 
     def peek(self) -> float:
@@ -106,15 +106,6 @@ class RingBuffer:
             
         # Return the last (newest) value in self.buffer
         return self.buffer[self._front]
-    
-    def reset(self):
-        '''
-            Reset all the values of the ring buffer, excluding the capacity
-        '''
-        self._front = 0
-        self._rear = 0
-        self.buffer = [None]*self.MAX_CAP
-
 
 class RingBufferFull(Exception):
     '''

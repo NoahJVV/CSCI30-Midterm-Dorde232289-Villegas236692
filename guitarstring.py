@@ -31,6 +31,8 @@ class GuitarString:
         self.capacity = math.ceil(44100 / frequency)    # Initialize the variable that stores how much capacity the ring buffer should hold
         self.buffer = RingBuffer(self.capacity)         # Initialize the variable that stores the ring buffer
         self.ticks = 0                                  # Initialize the variable that counts how many times tick() has run
+
+        # Enqueue N zeroes into the ring buffer
         for i in range(self.capacity):
             self.buffer.enqueue(0)
 
@@ -61,10 +63,10 @@ class GuitarString:
         '''
             Advance the simulation one time step by applying the Karplus--Strong update
         '''
-        # Apply Karplus--Strong
+        # Apply Karplus--Strong algorithm
         self.buffer.enqueue(0.996 * (0.5 * (self.buffer.dequeue() + self.buffer.peek())))
         
-        # Add a tick count
+        # Increment tick count
         self.ticks += 1
 
 
@@ -79,16 +81,3 @@ class GuitarString:
             Return the number of ticks so far
         '''
         return self.ticks
-    
-    def reset(self):
-        '''
-            Reset the value of the 
-        '''
-        self.ticks = 0
-        self.buffer.reset()
-
-    def getCapacity(self):
-        '''
-            Return the capacity of the ring buffer
-        '''
-        return self.buffer.MAX_CAP
