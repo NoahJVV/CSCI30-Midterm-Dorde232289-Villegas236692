@@ -13,6 +13,14 @@ if __name__ == '__main__':
     string_A = GuitarString(CONCERT_A)
     string_C = GuitarString(CONCERT_C)
 
+    '''
+        For ringbuffer_tester to work, we need to call an exception if the buffer is empty.
+
+        However, for guitarlite.py to work, we need to return a value with peek() despite it being
+        called before the buffer is populated. Therefore, there is a cognitive dissonance/paradox
+        in the way that the guitarlite is meant
+    '''
+
     n_iters = 0
     while True:
         # it turns out that the bottleneck is in polling for key events
