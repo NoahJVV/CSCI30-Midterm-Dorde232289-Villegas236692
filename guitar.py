@@ -8,7 +8,7 @@ if __name__ == '__main__':
   stdkeys.create_window()
 
   keyboard = "q2we4r5ty7u8i9op-[=]"
-  samples = []
+  samples = [GuitarString(440 * 1.059463 ** (i-12)) for i in range(len(keyboard))]
 
   n_iters = 0
   while True:
@@ -22,16 +22,21 @@ if __name__ == '__main__':
       key = stdkeys.next_key_typed()
       try:
         i = keyboard.index(key)
-        samples.append(GuitarString(440 * 1.059463 ** (i-12)))
-        samples[len(samples)-1].pluck()
+        samples[i].pluck()
+        # samples.append(GuitarString(440 * 1.059463 ** (i-12)))
+        # samples[len(samples)-1].pluck()
       except:
         pass
     
     sample = 0
     for i in samples:
-      sample += i.sample()
+      if not i.buffer.is_empty():
+        sample += i.sample()
 
     play_sample(sample)
 
     for i in samples:
-      i.tick()
+      if not i.buffer.is_empty():
+        i.tick()
+        if i.time() > 20000:
+          i.reset()

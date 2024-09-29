@@ -99,6 +99,11 @@ class RingBuffer:
             
         # Return the last (newest) value in self.buffer
         return self.buffer[self._front]
+    
+    def reset(self):
+        self._front = 0
+        self._rear = 0
+        self.buffer = [None]*self.MAX_CAP
 
 
 class RingBufferFull(Exception):

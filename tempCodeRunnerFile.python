@@ -1,0 +1,7 @@
+a = 400
+b = 600
+while True:
+  temp = 0
+  print(temp = .996 * .5 * (a+b))
+  a = b
+  b = temp
