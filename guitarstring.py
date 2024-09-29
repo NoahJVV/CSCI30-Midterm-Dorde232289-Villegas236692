@@ -31,6 +31,8 @@ class GuitarString:
         self.capacity = math.ceil(44100 / frequency)    # Initialize the variable that stores how much capacity the ring buffer should hold
         self.buffer = RingBuffer(self.capacity)         # Initialize the variable that stores the ring buffer
         self.ticks = 0                                  # Initialize the variable that counts how many times tick() has run
+        for i in range(self.capacity):
+            self.buffer.enqueue(0)
 
     @classmethod
     def make_from_array(cls, init: list[int]):
@@ -52,6 +54,7 @@ class GuitarString:
         '''
         # Fill buffer with white noise
         for i in range(self.capacity):
+            self.buffer.dequeue()
             self.buffer.enqueue(random.uniform(-0.5, 0.5))
 
     def tick(self):
