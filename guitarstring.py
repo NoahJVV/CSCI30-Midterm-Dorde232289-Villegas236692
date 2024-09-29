@@ -21,6 +21,7 @@
 
 from ringbuffer import *
 import math
+import random
 
 class GuitarString:
     def __init__(self, frequency: float):
