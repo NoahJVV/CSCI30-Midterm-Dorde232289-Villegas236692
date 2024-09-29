@@ -18,12 +18,20 @@ if __name__ == '__main__':
     n_iters += 1
 
     if stdkeys.has_next_key_typed():
-      i = 0
+      # i = 0
+      new = True
       key = stdkeys.next_key_typed()
       try:
         i = keyboard.index(key)
-        samples.append(GuitarString(440 * 1.059463 ** (i-12)))
-        samples[len(samples)-1].pluck()
+        for j in samples:
+          if j.getCapacity() == 440 * 1.059463 ** (i-12):
+            j.reset()
+            j.pluck()
+            new = False
+            break
+        if new:
+          samples.append(GuitarString(440 * 1.059463 ** (i-12)))
+          samples[len(samples)-1].pluck()
       except:
         pass
     
@@ -35,3 +43,5 @@ if __name__ == '__main__':
 
     for i in samples:
       i.tick()
+      if i.time() > 30000:
+        samples.remove(i)

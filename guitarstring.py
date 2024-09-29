@@ -75,3 +75,10 @@ class GuitarString:
         Return the number of ticks so far
         '''
         return self.ticks
+    
+    def reset(self):
+        self.ticks = 0
+        self.buffer.reset()
+
+    def getCapacity(self):
+        return self.buffer.MAX_CAP
