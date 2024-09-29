@@ -27,16 +27,17 @@ class RingBuffer:
         self.MAX_CAP = capacity             # Initialize the variable stores the max capacity of the ring buffer
         self._front = 0                     # Initialize the variable that stores the index of the front of the ring buffer
         self._rear = 0                      # Initialize the variable that stores the index of the rear of the ring buffer
-        self.buffer = [None]*capacity       # Initialize the ring buffer in the form of a list
+        self.buffer = [None]*capacity       # Initialize the ring buffer in the form of a list of Nones based on the capacity provided
 
     def size(self) -> int:
         '''
             Return number of items currently in the buffer
         '''
-        count = 0
+        count = 0   # Variable that counts the number of items that are not equal to None in the buffer
         for element in self.buffer:
             if element is not None: count += 1
 
+        # Return the count
         return count                                     
 
     def is_empty(self) -> bool:
@@ -55,36 +56,41 @@ class RingBuffer:
         # Return bool about if buffer is at full capacity
         for element in self.buffer:
             if element is None: return False
-        return True                     
+        return True
 
     def enqueue(self, x: float):
         '''
             Add item `x` to the end
         '''
+        # Raise the RingBufferFull exception if the buffer is full already
         if self.is_full(): 
             raise RingBufferFull
         
+        # Assign the value that is being queued and
+        # update the value for the rear of the buffer
         self.buffer[self._rear] = x                       
         self._rear += 1                                         
 
+        # Wrap around for self._rear
         if self._rear == self.MAX_CAP: self._rear = 0
 
     def dequeue(self) -> float:
         '''
             Return and remove item from the front
         '''
+        # Raise the RingBufferEmpty exception if the buffer is in fact empty
         if self.is_empty():
             raise RingBufferEmpty                              
         
         # Save the value of the item at the front of the buffer to return later
-        old_front = self.buffer[self._front]                    
+        old_front = self.buffer[self._front]
 
         # Remove the value that is being dequeued and
         # update the value for the front of the buffer
-        self.buffer[self._front] = None                         
-        self._front += 1                                       
+        self.buffer[self._front] = None
+        self._front += 1
 
-        # Wrap around
+        # Wrap around for self._front
         if self._front == self.MAX_CAP: self._front = 0
 
         # Return the value of the item removed
@@ -94,6 +100,7 @@ class RingBuffer:
         '''
             Return (but do not delete) item from the front
         '''
+        # Raise the RingBufferEmpty exception if the buffer is in fact empty
         if self.is_empty():
             raise RingBufferEmpty
             
@@ -101,6 +108,9 @@ class RingBuffer:
         return self.buffer[self._front]
     
     def reset(self):
+        '''
+            Reset all the values of the ring buffer, excluding the capacity
+        '''
         self._front = 0
         self._rear = 0
         self.buffer = [None]*self.MAX_CAP
