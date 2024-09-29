@@ -3,6 +3,7 @@
 from guitarstring import GuitarString
 from stdaudio import play_sample
 import stdkeys
+import math
 
 if __name__ == '__main__':
   stdkeys.create_window()
@@ -18,19 +19,20 @@ if __name__ == '__main__':
     n_iters += 1
 
     if stdkeys.has_next_key_typed():
-      # i = 0
       new = True
       key = stdkeys.next_key_typed()
       try:
         i = keyboard.index(key)
+        hertz = 440 * 1.059463 ** (i-12)
+        capacity = math.ceil(44100/hertz)
         for j in samples:
-          if j.getCapacity() == 440 * 1.059463 ** (i-12):
+          if j.getCapacity() == capacity:
             j.reset()
             j.pluck()
             new = False
             break
         if new:
-          samples.append(GuitarString(440 * 1.059463 ** (i-12)))
+          samples.append(GuitarString(hertz))
           samples[len(samples)-1].pluck()
       except:
         pass
