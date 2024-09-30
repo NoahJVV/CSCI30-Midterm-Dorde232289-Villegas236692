@@ -41,37 +41,39 @@ if __name__ == '__main__':
       n_iters += 1
 
       # Check if the user has typed a key. If so, process it:
-      if stdkeys.has_next_key_typed():
+      if stdkeys.has_next_key_typed() :
         key = stdkeys.next_key_typed()  # Assign the key pressed to a variable
 
-        # Try-exception to avoid any sudden exceptions
-        try:
-          index = keyboard.index(key)       # Assign the index of the key within the keyboard to a var
-          new = True                        # Initialize the var that checks whether or not the sample added is new
+        # Avoid accepting weird inputs (SHIFT, CTRL, ALT, NUM LK, etc.)
+        if key != '':
+          # Try-exception to avoid any sudden exceptions
+          try:
+            index = keyboard.index(key)       # Assign the index of the key within the keyboard to a var
+            new = True                        # Initialize the var that checks whether or not the sample added is new
 
-          # Run through all the samples within the list of samples
-          for elem in samples:
-            # If the sample's freq. matches the freq. of a sample in the list:
-            if elem.buffer.MAX_CAP == ceil(44100 / (440 * 1.059463 ** (index-12))):
+            # Run through all the samples within the list of samples
+            for elem in samples:
+              # If the sample's freq. matches the freq. of a sample in the list:
+              if elem.buffer.MAX_CAP == ceil(44100 / (440 * 1.059463 ** (index-12))):
+                # Pluck the sample
+                elem.pluck()
+
+                # Reset the tick count
+                elem.ticks = 0
+
+                # Update new to reflect that the sample already exists within the list
+                new = False
+                break
+
+            # If it is a new sample: 
+            if new:
+              # Add the sample to the list
+              samples.append(GuitarString(440 * 1.059463 ** (index-12)))
+
               # Pluck the sample
-              elem.pluck()
-
-              # Reset the tick count
-              elem.ticks = 0
-
-              # Update new to reflect that the sample already exists within the list
-              new = False
-              break
-
-          # If it is a new sample: 
-          if new:
-            # Add the sample to the list
-            samples.append(GuitarString(440 * 1.059463 ** (index-12)))
-
-            # Pluck the sample
-            samples[len(samples)-1].pluck()
-        except:
-          pass
+              samples[len(samples)-1].pluck()
+          except:
+            pass
 
       # Compute the superposition of samples
       sample = 0
